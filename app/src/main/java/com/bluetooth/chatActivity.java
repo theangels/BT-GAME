@@ -74,6 +74,9 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 
 	void play(){
 
+		draw = (Button)findViewById(R.id.draw);
+		eraser = (Button)findViewById(R.id.eraser);
+
 		cl.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

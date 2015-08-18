@@ -39,7 +39,7 @@
             android:layout_marginStart="26dp" />
 
         <Button
-            android:id="@+id/earser"
+            android:id="@+id/eraser"
             android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:text="擦除"
