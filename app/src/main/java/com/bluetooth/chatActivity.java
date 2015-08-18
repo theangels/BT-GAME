@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -61,26 +63,61 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	private long firClick = 0;
 	private long secClick = 0;
 
+	private final Timer timer = new Timer();
+	private TimerTask task;
+
+	private String []send;
+
+	//不间断发送信息13秒一次
+	Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			// 要做的事情
+			for(int i = 0; i < 32; i++){
+				sendMessageHandle(send[i]);
+				delay(140);
+				System.out.printf("%s\n", send[i]);
+
+			}
+			super.handleMessage(msg);
+		}
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(com.bluetooth.R.layout.chat);
 		mContext = this;
+		init();
 
 		cl = (Button)findViewById(R.id.cl);
 		table = (TableView)findViewById(R.id.table);
+		task = new TimerTask() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Message message = new Message();
+				message.what = 1;
+				handler.sendMessage(message);
+			}
+		};
+		timer.schedule(task, 2000, 13000);//推迟发送 发送间断
+		send = new String[32+5];
+		msgInit();
 
-		init();
 		play();
 	}
 
 	void play(){
 
+		//清楚命令
 		cl.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				for(int i = 1; i <= 16; i++){
-					for(int j = 1; j <= 16; j++){
+				for (int i = 1; i <= 16; i++) {
+					for (int j = 1; j <= 16; j++) {
+						msgInit();
 						table.grade[i][j].setBackgroundColor(Color.rgb(255, 255, 255));
 					}
 				}
@@ -88,284 +125,76 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			}
 		});
 
+		//划屏事件
 		table.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				int h = get_h(event.getY())+1;
-				int l = get_l(event.getX())+1;
-				switch (event.getAction()){
+				int h = get_h(event.getY()) + 1;
+				int l = get_l(event.getX()) + 1;
+				switch (event.getAction()) {
+					//清除
 					case MotionEvent.ACTION_UP:
 						count++;
-						if(count == 1){
+						if (count == 1) {
 							firClick = System.currentTimeMillis();
 
-						}
-						else if (count == 2){
+						} else if (count == 2) {
 							secClick = System.currentTimeMillis();
-							if(secClick - firClick < 1000){
-								String go = "@";
+							if (secClick - firClick < 1000) {
 								if(l>=1&&l<=8){
-									switch (h){
-										case 1:
-											go+="0";
-											break;
-										case 2:
-											go+="1";
-											break;
-										case 3:
-											go+="2";
-											break;
-										case 4:
-											go+="3";
-											break;
-										case 5:
-											go+="4";
-											break;
-										case 6:
-											go+="5";
-											break;
-										case 7:
-											go+="6";
-											break;
-										case 8:
-											go+="7";
-											break;
-										case 9:
-											go+="8";
-											break;
-										case 10:
-											go+="9";
-											break;
-										case 11:
-											go+="10";
-											break;
-										case 12:
-											go+="11";
-											break;
-										case 13:
-											go+="12";
-											break;
-										case 14:
-											go+="13";
-											break;
-										case 15:
-											go+="14";
-											break;
-										case 16:
-											go+="15";
-											break;
+									char tmp[]=send[h-1].toCharArray();
+									tmp[3+l]='1';
+									String change = "";
+									for(int i = 0; i < tmp.length; i++){
+										change += tmp[i];
 									}
-									go+="#";
-									for(int i = 1; i <= 8; i++){
-										if(i==l)
-											go+="1";
-										else
-											go+="0";
-									}
-									go+="#0$";
-									sendMessageHandle(go);
-									//System.out.printf("%s\n",go);
+									send[h-1] = change;
+									//Toast.makeText(mContext, send[h-1], Toast.LENGTH_SHORT).show();
 								}
 								else{
-									switch (h){
-										case 1:
-											go+="16";
-											break;
-										case 2:
-											go+="17";
-											break;
-										case 3:
-											go+="18";
-											break;
-										case 4:
-											go+="19";
-											break;
-										case 5:
-											go+="20";
-											break;
-										case 6:
-											go+="21";
-											break;
-										case 7:
-											go+="22";
-											break;
-										case 8:
-											go+="23";
-											break;
-										case 9:
-											go+="24";
-											break;
-										case 10:
-											go+="25";
-											break;
-										case 11:
-											go+="26";
-											break;
-										case 12:
-											go+="27";
-											break;
-										case 13:
-											go+="28";
-											break;
-										case 14:
-											go+="29";
-											break;
-										case 15:
-											go+="30";
-											break;
-										case 16:
-											go+="31";
-											break;
+									char tmp[]=send[h+15].toCharArray();
+									tmp[l-5]='1';
+									String change = "";
+									for(int i = 0; i < tmp.length; i++){
+										change += tmp[i];
 									}
-									go+="#";
-									for(int i = 1; i <= 8; i++){
-										if(i==l-8)
-											go+="1";
-										else
-											go+="0";
-									}
-									go+="#0$";
-									sendMessageHandle(go);
-									//System.out.printf("%s\n",go);
+									send[h+15] = change;
+									//Toast.makeText(mContext, send[h+15], Toast.LENGTH_SHORT).show();
 								}
 								table.grade[h][l].setBackgroundColor(Color.rgb(255, 255, 255));
 								//System.out.printf("坐标为 %d  %d\n",h,l);
-								delay(135);
+								//delay(100);
 							}
 							count = 0;
 							firClick = 0;
 							secClick = 0;
 						}
 						break;
+					//绘画
 					case MotionEvent.ACTION_MOVE:
-						String go = "@";
+						table.grade[h][l].setBackgroundColor(Color.rgb(0, 0, 0));
 						if(l>=1&&l<=8){
-							switch (h){
-								case 1:
-									go+="0";
-									break;
-								case 2:
-									go+="1";
-									break;
-								case 3:
-									go+="2";
-									break;
-								case 4:
-									go+="3";
-									break;
-								case 5:
-									go+="4";
-									break;
-								case 6:
-									go+="5";
-									break;
-								case 7:
-									go+="6";
-									break;
-								case 8:
-									go+="7";
-									break;
-								case 9:
-									go+="8";
-									break;
-								case 10:
-									go+="9";
-									break;
-								case 11:
-									go+="10";
-									break;
-								case 12:
-									go+="11";
-									break;
-								case 13:
-									go+="12";
-									break;
-								case 14:
-									go+="13";
-									break;
-								case 15:
-									go+="14";
-									break;
-								case 16:
-									go+="15";
-									break;
+							char tmp[]=send[h-1].toCharArray();
+							tmp[3+l]='0';
+							String change = "";
+							for(int i = 0; i < tmp.length; i++){
+								change += tmp[i];
 							}
-							go+="#";
-							for(int i = 1; i <= 8; i++){
-								if(i==l)
-									go+="0";
-								else
-									go+="1";
-							}
-							go+="#1$";
-							sendMessageHandle(go);
-							//System.out.printf("%s\n",go);
+							send[h-1] = change;
+							//Toast.makeText(mContext, send[h-1], Toast.LENGTH_SHORT).show();
 						}
 						else{
-							switch (h){
-								case 1:
-									go+="16";
-									break;
-								case 2:
-									go+="17";
-									break;
-								case 3:
-									go+="18";
-									break;
-								case 4:
-									go+="19";
-									break;
-								case 5:
-									go+="20";
-									break;
-								case 6:
-									go+="21";
-									break;
-								case 7:
-									go+="22";
-									break;
-								case 8:
-									go+="23";
-									break;
-								case 9:
-									go+="24";
-									break;
-								case 10:
-									go+="25";
-									break;
-								case 11:
-									go+="26";
-									break;
-								case 12:
-									go+="27";
-									break;
-								case 13:
-									go+="28";
-									break;
-								case 14:
-									go+="29";
-									break;
-								case 15:
-									go+="30";
-									break;
-								case 16:
-									go+="31";
-									break;
+							char tmp[]=send[h+15].toCharArray();
+							tmp[l-5]='0';
+							String change = "";
+							for(int i = 0; i < tmp.length; i++){
+								change += tmp[i];
 							}
-							go+="#";
-							for(int i = 1; i <= 8; i++){
-								if(i==l-8)
-									go+="0";
-								else
-									go+="1";
-							}
-							go+="#1$";
-							sendMessageHandle(go);
-							//System.out.printf("%s\n",go);
+							send[h+15] = change;
+							//Toast.makeText(mContext, send[h+15], Toast.LENGTH_SHORT).show();
 						}
-						table.grade[h][l].setBackgroundColor(Color.rgb(0, 0, 0));
 						//System.out.printf("坐标为 %d  %d\n",h,l);
-						delay(135);
+						//delay(100);
 						break;
 				}
 				return false;
@@ -389,6 +218,86 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			Thread.sleep(ms);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private String translate(int x){
+		switch (x){
+			case 0:
+				return "00";
+			case 1:
+				return "01";
+			case 2:
+				return "02";
+			case 3:
+				return "03";
+			case 4:
+				return "04";
+			case 5:
+				return "05";
+			case 6:
+				return "06";
+			case 7:
+				return "07";
+			case 8:
+				return "08";
+			case 9:
+				return "09";
+			case 10:
+				return "10";
+			case 11:
+				return "11";
+			case 12:
+				return "12";
+			case 13:
+				return "13";
+			case 14:
+				return "14";
+			case 15:
+				return "15";
+			case 16:
+				return "16";
+			case 17:
+				return "17";
+			case 18:
+				return "18";
+			case 19:
+				return "19";
+			case 20:
+				return "20";
+			case 21:
+				return "21";
+			case 22:
+				return "22";
+			case 23:
+				return "23";
+			case 24:
+				return "24";
+			case 25:
+				return "25";
+			case 26:
+				return "26";
+			case 27:
+				return "27";
+			case 28:
+				return "28";
+			case 29:
+				return "29";
+			case 30:
+				return "30";
+			case 31:
+				return "31";
+		}
+		return "00";
+	}
+
+	private void msgInit(){
+		for(int i = 0; i < 32; i++){
+			send[i] = "@";//包头
+			send[i] += translate(i);//行号
+			send[i] += "#";//中标识符
+			send[i] += "11111111";//数据
+			send[i] += "$";//包尾
 		}
 	}
 

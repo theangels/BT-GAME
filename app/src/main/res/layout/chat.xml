@@ -42,7 +42,8 @@
             android:layout_height="fill_parent"
             android:id="@+id/table"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
         </com.bluetooth.TableView>
     </RelativeLayout>
 

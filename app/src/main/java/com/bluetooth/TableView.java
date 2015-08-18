@@ -40,7 +40,6 @@ public class TableView extends ViewGroup {
 
     public boolean onTouchEvent(MotionEvent event){
         switch (event.getAction()){
-
         }
         return true;
     }
