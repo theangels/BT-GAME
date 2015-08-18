@@ -55,10 +55,11 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 	private Button cl;
-	private boolean model;
-	private Button draw;
-	private Button eraser;
 	private TableView table;
+
+	private int count = 0;
+	private long firClick = 0;
+	private long secClick = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,10 +91,153 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 		table.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				int h = get_h(event.getY())+1;
+				int l = get_l(event.getX())+1;
 				switch (event.getAction()){
+					case MotionEvent.ACTION_UP:
+						count++;
+						if(count == 1){
+							firClick = System.currentTimeMillis();
+
+						}
+						else if (count == 2){
+							secClick = System.currentTimeMillis();
+							if(secClick - firClick < 1000){
+								String go = "@";
+								if(l>=1&&l<=8){
+									switch (h){
+										case 1:
+											go+="0";
+											break;
+										case 2:
+											go+="1";
+											break;
+										case 3:
+											go+="2";
+											break;
+										case 4:
+											go+="3";
+											break;
+										case 5:
+											go+="4";
+											break;
+										case 6:
+											go+="5";
+											break;
+										case 7:
+											go+="6";
+											break;
+										case 8:
+											go+="7";
+											break;
+										case 9:
+											go+="8";
+											break;
+										case 10:
+											go+="9";
+											break;
+										case 11:
+											go+="10";
+											break;
+										case 12:
+											go+="11";
+											break;
+										case 13:
+											go+="12";
+											break;
+										case 14:
+											go+="13";
+											break;
+										case 15:
+											go+="14";
+											break;
+										case 16:
+											go+="15";
+											break;
+									}
+									go+="#";
+									for(int i = 1; i <= 8; i++){
+										if(i==l)
+											go+="1";
+										else
+											go+="0";
+									}
+									go+="#0$";
+									sendMessageHandle(go);
+									//System.out.printf("%s\n",go);
+								}
+								else{
+									switch (h){
+										case 1:
+											go+="16";
+											break;
+										case 2:
+											go+="17";
+											break;
+										case 3:
+											go+="18";
+											break;
+										case 4:
+											go+="19";
+											break;
+										case 5:
+											go+="20";
+											break;
+										case 6:
+											go+="21";
+											break;
+										case 7:
+											go+="22";
+											break;
+										case 8:
+											go+="23";
+											break;
+										case 9:
+											go+="24";
+											break;
+										case 10:
+											go+="25";
+											break;
+										case 11:
+											go+="26";
+											break;
+										case 12:
+											go+="27";
+											break;
+										case 13:
+											go+="28";
+											break;
+										case 14:
+											go+="29";
+											break;
+										case 15:
+											go+="30";
+											break;
+										case 16:
+											go+="31";
+											break;
+									}
+									go+="#";
+									for(int i = 1; i <= 8; i++){
+										if(i==l-8)
+											go+="1";
+										else
+											go+="0";
+									}
+									go+="#0$";
+									sendMessageHandle(go);
+									//System.out.printf("%s\n",go);
+								}
+								table.grade[h][l].setBackgroundColor(Color.rgb(255, 255, 255));
+								//System.out.printf("坐标为 %d  %d\n",h,l);
+								delay(135);
+							}
+							count = 0;
+							firClick = 0;
+							secClick = 0;
+						}
+						break;
 					case MotionEvent.ACTION_MOVE:
-						int h = (int)get_h(event.getY())+1;
-						int l = (int)get_l(event.getX())+1;
 						String go = "@";
 						if(l>=1&&l<=8){
 							switch (h){
@@ -153,9 +297,9 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 								else
 									go+="1";
 							}
-							go+="$";
+							go+="#1$";
 							sendMessageHandle(go);
-							System.out.printf("%s\n",go);
+							//System.out.printf("%s\n",go);
 						}
 						else{
 							switch (h){
@@ -210,17 +354,18 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 							}
 							go+="#";
 							for(int i = 1; i <= 8; i++){
-								if(i==l)
+								if(i==l-8)
 									go+="0";
 								else
 									go+="1";
 							}
-							go+="$";
+							go+="#1$";
 							sendMessageHandle(go);
-							System.out.printf("%s\n",go);
+							//System.out.printf("%s\n",go);
 						}
+						table.grade[h][l].setBackgroundColor(Color.rgb(0, 0, 0));
 						//System.out.printf("坐标为 %d  %d\n",h,l);
-						delay(110);
+						delay(135);
 						break;
 				}
 				return false;
