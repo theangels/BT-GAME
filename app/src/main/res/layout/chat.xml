@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+	xmlns:android="http://schemas.android.com/apk/res/android"
+   	android:id = "@+id/container"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id= "@+id/edit_bottombar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <Button android:id="@+id/btn_disconnect"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft ="true"
+            android:text="断开"/>
+
+        <Button
+            android:id="@+id/cl"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:text="清除"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/draw"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:text="绘图"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/btn_disconnect"
+            android:layout_marginStart="26dp" />
+
+        <Button
+            android:id="@+id/earser"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:text="擦除"
+            android:layout_marginEnd="36dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/cl" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/edit_bottombar">
+        <com.bluetooth.TableView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/table"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+        </com.bluetooth.TableView>
+    </RelativeLayout>
+
+</RelativeLayout>
