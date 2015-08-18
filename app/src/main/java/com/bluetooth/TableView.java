@@ -1,6 +1,7 @@
 package com.bluetooth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -23,6 +25,13 @@ public class TableView extends ViewGroup {
     private int mRow;// 行数
     private int mCol;// 列数
 
+    private Button cl = (Button)findViewById(R.id.cl);;
+    private boolean model = true;
+
+    private int count = 0;
+    private long firClick = 0;
+    private long secClick = 0;
+
     TextView [][]grade;
 
     public TableView(Context context, AttributeSet attrs) {
@@ -34,11 +43,27 @@ public class TableView extends ViewGroup {
     }
 
     public boolean onTouchEvent(MotionEvent event){
+        int h = get_h(event.getY())+1;
+        int l = get_l(event.getX())+1;
         switch (event.getAction()){
+            case MotionEvent.ACTION_UP:
+                count++;
+                if(count == 1){
+                    firClick = System.currentTimeMillis();
+
+                } else if (count == 2){
+                    secClick = System.currentTimeMillis();
+                    if(secClick - firClick < 1000){
+                        grade[h][l].setBackgroundColor(Color.rgb(255, 255, 255));
+                    }
+                    count = 0;
+                    firClick = 0;
+                    secClick = 0;
+                }
+                break;
             case MotionEvent.ACTION_MOVE:
-                int h = get_h(event.getY())+1;
-                int l = get_l(event.getX())+1;
                 grade[h][l].setBackgroundColor(Color.rgb(0, 0, 0));
+                break;
         }
         return true;
     }

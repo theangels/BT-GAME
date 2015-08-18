@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,12 +26,8 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import com.bluetooth.TableView;
 
 public class chatActivity extends Activity implements OnItemClickListener ,OnClickListener{
 	/** Called when the activity is first created. */
@@ -58,44 +55,35 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 	private Button cl;
-	private boolean model = false;
+	private boolean model;
 	private Button draw;
 	private Button eraser;
+	private TableView table;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(com.bluetooth.R.layout.chat);
 		mContext = this;
+
 		cl = (Button)findViewById(R.id.cl);
+		table = (TableView)findViewById(R.id.table);
+
 		init();
 		play();
 	}
 
 	void play(){
 
-		draw = (Button)findViewById(R.id.draw);
-		eraser = (Button)findViewById(R.id.eraser);
-
 		cl.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				sendMessageHandle("c");
-			}
-		});
-
-		TableView table = (TableView)findViewById(R.id.table);
-
-		table.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				if(!model){
-					model = true;
+				for(int i = 1; i <= 16; i++){
+					for(int j = 1; j <= 16; j++){
+						table.grade[i][j].setBackgroundColor(Color.rgb(255, 255, 255));
+					}
 				}
-				else
-					model = false;
-				System.out.printf("切换模式！");
-				return false;
+				sendMessageHandle("c");
 			}
 		});
 
@@ -104,15 +92,150 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			public boolean onTouch(View v, MotionEvent event) {
 				switch (event.getAction()){
 					case MotionEvent.ACTION_MOVE:
-						float fx = event.getX();
-						float fy = event.getY();
-						System.out.printf("坐标为 %f  %f\n",fx,fy);
-						//delay(200);
+						int h = (int)get_h(event.getY())+1;
+						int l = (int)get_l(event.getX())+1;
+						String go = "@";
+						if(l>=1&&l<=8){
+							switch (h){
+								case 1:
+									go+="0";
+									break;
+								case 2:
+									go+="1";
+									break;
+								case 3:
+									go+="2";
+									break;
+								case 4:
+									go+="3";
+									break;
+								case 5:
+									go+="4";
+									break;
+								case 6:
+									go+="5";
+									break;
+								case 7:
+									go+="6";
+									break;
+								case 8:
+									go+="7";
+									break;
+								case 9:
+									go+="8";
+									break;
+								case 10:
+									go+="9";
+									break;
+								case 11:
+									go+="10";
+									break;
+								case 12:
+									go+="11";
+									break;
+								case 13:
+									go+="12";
+									break;
+								case 14:
+									go+="13";
+									break;
+								case 15:
+									go+="14";
+									break;
+								case 16:
+									go+="15";
+									break;
+							}
+							go+="#";
+							for(int i = 1; i <= 8; i++){
+								if(i==l)
+									go+="0";
+								else
+									go+="1";
+							}
+							go+="$";
+							sendMessageHandle(go);
+							System.out.printf("%s\n",go);
+						}
+						else{
+							switch (h){
+								case 1:
+									go+="16";
+									break;
+								case 2:
+									go+="17";
+									break;
+								case 3:
+									go+="18";
+									break;
+								case 4:
+									go+="19";
+									break;
+								case 5:
+									go+="20";
+									break;
+								case 6:
+									go+="21";
+									break;
+								case 7:
+									go+="22";
+									break;
+								case 8:
+									go+="23";
+									break;
+								case 9:
+									go+="24";
+									break;
+								case 10:
+									go+="25";
+									break;
+								case 11:
+									go+="26";
+									break;
+								case 12:
+									go+="27";
+									break;
+								case 13:
+									go+="28";
+									break;
+								case 14:
+									go+="29";
+									break;
+								case 15:
+									go+="30";
+									break;
+								case 16:
+									go+="31";
+									break;
+							}
+							go+="#";
+							for(int i = 1; i <= 8; i++){
+								if(i==l)
+									go+="0";
+								else
+									go+="1";
+							}
+							go+="$";
+							sendMessageHandle(go);
+							System.out.printf("%s\n",go);
+						}
+						//System.out.printf("坐标为 %d  %d\n",h,l);
+						delay(110);
 						break;
 				}
 				return false;
 			}
 		});
+	}
+
+	private int get_h(float h) {
+		int steph = table.getHeight() / 16;
+		return (int) (h / steph);
+	}
+
+	private int get_l(float l) {
+		int stepl = table.getWidth() / 16;
+		return (int) (l / stepl);
 	}
 
 	private void delay(int ms){
