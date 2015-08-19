@@ -69,7 +69,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	private String []send;
 	private boolean []is;
 
-	//不间断发送信息1秒一次
+	//不间断发送信息0.4秒一次
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

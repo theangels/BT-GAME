@@ -46,13 +46,13 @@ public class ChatListAdapter extends BaseAdapter {
         }
         else{
         	viewHolder = (ViewHolder)convertView.getTag();
-        }       
-        
+        }
+
         if(item.isSiri)
         {
         	viewHolder.child.setBackgroundResource(R.drawable.msgbox_rec);
         }
-        else 
+        else
         {
         	viewHolder.child.setBackgroundResource(R.drawable.msgbox_send);
         }

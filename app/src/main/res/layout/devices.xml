@@ -10,17 +10,12 @@
 	  android:layout_width="fill_parent"
 	  android:layout_height="wrap_content"
 	  android:layout_alignParentBottom = "true"
-	  android:id= "@+id/bt_bottombar">	  
-		
-		<Button android:id="@+id/start_service"
-			android:layout_width="wrap_content" 			
-			android:layout_height="wrap_content"  
-			android:text="启动服务端"/> 			
+	  android:id= "@+id/bt_bottombar">
+
 		<Button android:id="@+id/start_seach"
 			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"  
-			android:layout_toRightOf="@+id/start_service"
-			android:text="开始搜索"/> 		
+			android:layout_height="wrap_content"
+			android:text="开始搜索"/>
 	</RelativeLayout>  
 
 	 <ListView  
