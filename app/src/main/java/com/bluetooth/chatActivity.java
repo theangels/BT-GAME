@@ -67,18 +67,26 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	private TimerTask task;
 
 	private String []send;
+	private boolean []is;
 
-	//不间断发送信息13秒一次
+	//不间断发送信息1秒一次
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			// 要做的事情
+			int t=1;
 			for(int i = 0; i < 32; i++){
-				sendMessageHandle(send[i]);
-				delay(140);
-				System.out.printf("%s\n", send[i]);
-
+				if(is[i]){
+					sendMessageHandle(send[i]);
+					//delay(140);
+					//Toast.makeText(mContext, "发送！", Toast.LENGTH_SHORT).show();
+					//System.out.printf("%s\n", send[i]);
+					if (t < 16) {
+						is[i]=false;
+						t++;
+					}
+				}
 			}
 			super.handleMessage(msg);
 		}
@@ -102,8 +110,9 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				handler.sendMessage(message);
 			}
 		};
-		timer.schedule(task, 2000, 13000);//推迟发送 发送间断
+		timer.schedule(task, 1000, 1000);//推迟发送 发送间断
 		send = new String[32+5];
+		is = new boolean[32+5];
 		msgInit();
 
 		play();
@@ -149,6 +158,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 										change += tmp[i];
 									}
 									send[h-1] = change;
+									is[h-1]=true;
 									//Toast.makeText(mContext, send[h-1], Toast.LENGTH_SHORT).show();
 								}
 								else{
@@ -159,6 +169,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 										change += tmp[i];
 									}
 									send[h+15] = change;
+									is[h+15]=true;
 									//Toast.makeText(mContext, send[h+15], Toast.LENGTH_SHORT).show();
 								}
 								table.grade[h][l].setBackgroundColor(Color.rgb(255, 255, 255));
@@ -181,6 +192,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 								change += tmp[i];
 							}
 							send[h-1] = change;
+							is[h-1]=true;
 							//Toast.makeText(mContext, send[h-1], Toast.LENGTH_SHORT).show();
 						}
 						else{
@@ -191,6 +203,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 								change += tmp[i];
 							}
 							send[h+15] = change;
+							is[h+15]=true;
 							//Toast.makeText(mContext, send[h+15], Toast.LENGTH_SHORT).show();
 						}
 						//System.out.printf("坐标为 %d  %d\n",h,l);
@@ -298,6 +311,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			send[i] += "#";//中标识符
 			send[i] += "11111111";//数据
 			send[i] += "$";//包尾
+			is[i]=false;
 		}
 	}
 
