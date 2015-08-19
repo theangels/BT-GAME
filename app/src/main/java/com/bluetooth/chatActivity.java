@@ -110,7 +110,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				handler.sendMessage(message);
 			}
 		};
-		timer.schedule(task, 1000, 1000);//推迟发送 发送间断
+		timer.schedule(task, 1000, 40);//推迟发送 发送间断
 		send = new String[32+5];
 		is = new boolean[32+5];
 		msgInit();
@@ -223,15 +223,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	private int get_l(float l) {
 		int stepl = table.getWidth() / 16;
 		return (int) (l / stepl);
-	}
-
-	private void delay(int ms){
-		try {
-			Thread.currentThread();
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private String translate(int x){
