@@ -54,7 +54,6 @@ public class AnimationTabHost extends TabHost {
 
 		super.setCurrentTab(index);
 
-		//View target=(View)findViewById(android.R.id.tabcontent);//android.R.id.tabhost
 		if(index > mCurrentTabID)
 		{
         	 TranslateAnimation translateAnimation = new TranslateAnimation      
@@ -65,8 +64,7 @@ public class AnimationTabHost extends TabHost {
                      Animation.RELATIVE_TO_PARENT, 0f      
              );
         	 translateAnimation.setDuration(durationMillis);      
-        	 getCurrentView().startAnimation(translateAnimation); 
-        	 //target.startAnimation(translateAnimation);
+        	 getCurrentView().startAnimation(translateAnimation);
 		}
 		else if(index < mCurrentTabID)
 		{
@@ -78,8 +76,7 @@ public class AnimationTabHost extends TabHost {
                      Animation.RELATIVE_TO_PARENT, 0f      
              );
         	 translateAnimation.setDuration(durationMillis);      
-        	 getCurrentView().startAnimation(translateAnimation); 
-        	 //target.startAnimation(translateAnimation);
+        	 getCurrentView().startAnimation(translateAnimation);
 		}
 		mCurrentTabID = index;
 	}

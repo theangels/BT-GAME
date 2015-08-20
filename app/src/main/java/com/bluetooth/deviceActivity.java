@@ -84,16 +84,6 @@ public class deviceActivity extends Activity {
 		seachButton = (Button)findViewById(R.id.start_seach);
 		seachButton.setOnClickListener(seachButtonClickListener);
 
-//		serviceButton = (Button)findViewById(R.id.start_service);
-//		serviceButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				Bluetooth.serviceOrCilent=ServerOrCilent.SERVICE;
-//				Bluetooth.mTabHost.setCurrentTab(1);
-//			}
-//		});
-
 	}
 	private OnClickListener seachButtonClickListener = new OnClickListener() {
 		@Override

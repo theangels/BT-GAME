@@ -4,7 +4,6 @@ import com.bluetooth.Bluetooth.ServerOrCilent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -14,18 +13,14 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -34,12 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class chatActivity extends Activity implements OnItemClickListener ,OnClickListener{
 	/** Called when the activity is first created. */
 
-	//private ListView mListView;
-	//private ArrayList<deviceListItem>list;
-//	private Button sendButton;
 	private Button disconnectButton;
-//	private EditText editMsgView;
-	//deviceListAdapter mAdapter;
 	Context mContext;
 
 	/* 一些常量，代表服务器的名称 */
@@ -79,9 +69,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			for(int i = 0; i < 32; i++){
 				if(is[i]){
 					sendMessageHandle(send[i]);
-					//delay(140);
-					//Toast.makeText(mContext, "发送！", Toast.LENGTH_SHORT).show();
-					//System.out.printf("%s\n", send[i]);
 					if (t < 4) {
 						is[i]=false;
 						t++;
@@ -161,7 +148,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 									}
 									send[h-1] = change;
 									is[h-1]=true;
-									//Toast.makeText(mContext, send[h-1], Toast.LENGTH_SHORT).show();
 								}
 								else{
 									char tmp[]=send[h+15].toCharArray();
@@ -172,11 +158,8 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 									}
 									send[h+15] = change;
 									is[h+15]=true;
-									//Toast.makeText(mContext, send[h+15], Toast.LENGTH_SHORT).show();
 								}
 								table.grade[h][l].setBackgroundColor(Color.rgb(255, 255, 255));
-								//System.out.printf("坐标为 %d  %d\n",h,l);
-								//delay(100);
 							}
 							count = 0;
 							firClick = 0;
@@ -195,7 +178,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 							}
 							send[h-1] = change;
 							is[h-1]=true;
-							//Toast.makeText(mContext, send[h-1], Toast.LENGTH_SHORT).show();
 						}
 						else{
 							char tmp[]=send[h+15].toCharArray();
@@ -206,10 +188,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 							}
 							send[h+15] = change;
 							is[h+15]=true;
-							//Toast.makeText(mContext, send[h+15], Toast.LENGTH_SHORT).show();
 						}
-						//System.out.printf("坐标为 %d  %d\n",h,l);
-						//delay(100);
 						break;
 				}
 				return false;
@@ -309,35 +288,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 	}
 
 	private void init() {
-		//list = new ArrayList<deviceListItem>();
-		//mAdapter = new deviceListAdapter(this, list);
-		//mListView = (ListView) findViewById(com.bluetooth.R.id.list);
-		//mListView.setAdapter(mAdapter);
-		//mListView.setOnItemClickListener(this);
-		//mListView.setFastScrollEnabled(true);
-//		editMsgView= (EditText)findViewById(com.bluetooth.R.id.MessageText);
-//		editMsgView.clearFocus();
-//
-//		sendButton= (Button)findViewById(com.bluetooth.R.id.btn_msg_send);
-//		sendButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				String msgText =editMsgView.getText().toString();
-//
-//
-//
-//				if (msgText.length()>0) {
-//					sendMessageHandle(msgText);
-//					editMsgView.setText("");
-//					editMsgView.clearFocus();
-//					//close InputMethodManager
-//					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//					imm.hideSoftInputFromWindow(editMsgView.getWindowToken(), 0);
-//				}else
-//					Toast.makeText(mContext, "发送内容不能为空！", Toast.LENGTH_SHORT).show();
-//			}
-//		});
 
 		disconnectButton= (Button)findViewById(com.bluetooth.R.id.btn_disconnect);
 		disconnectButton.setOnClickListener(new OnClickListener() {
@@ -358,25 +308,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			}
 		});
 	}
-	/*
-	private Handler LinkDetectedHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			//Toast.makeText(mContext, (String)msg.obj, Toast.LENGTH_SHORT).show();
-			if(msg.what==1)
-			{
-				list.add(new deviceListItem((String)msg.obj, true));
-			}
-			else
-			{
-				list.add(new deviceListItem((String)msg.obj, false));
-			}
-			mAdapter.notifyDataSetChanged();
-			mListView.setSelection(list.size() - 1);
-		}
-
-	};
-	*/
 
 	@Override
 	public synchronized void onPause() {
@@ -417,13 +348,11 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 		public void run() {
 			try {
 				//创建一个Socket连接：只需要服务器在注册时的UUID号
-				// socket = device.createRfcommSocketToServiceRecord(BluetoothProtocols.OBEX_OBJECT_PUSH_PROTOCOL_UUID);
 				socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
 				//连接
 				Message msg2 = new Message();
 				msg2.obj = "请稍候，正在连接服务器:"+Bluetooth.BlueToothAddress;
 				msg2.what = 0;
-				//LinkDetectedHandler.sendMessage(msg2);
 
 				socket.connect();
 
@@ -441,7 +370,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				Message msg = new Message();
 				msg.obj = "连接服务端异常！断开连接重新试一试。";
 				msg.what = 0;
-				//LinkDetectedHandler.sendMessage(msg);
 			}
 		}
 	};
@@ -461,7 +389,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				Message msg = new Message();
 				msg.obj = "请稍候，正在等待客户端的连接...";
 				msg.what = 0;
-				//LinkDetectedHandler.sendMessage(msg);
 				
 				/* 接受客户端的连接请求 */
 				socket = mserverSocket.accept();
@@ -471,7 +398,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				String info = "客户端已经连接上！可以发送信息。";
 				msg2.obj = info;
 				msg.what = 0;
-				//LinkDetectedHandler.sendMessage(msg2);
 				//启动接受数据
 				mreadThread = new readThread();
 				mreadThread.start();
@@ -553,9 +479,6 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//list.add(new deviceListItem(msg, false));
-		//mAdapter.notifyDataSetChanged();
-		//mListView.setSelection(list.size() - 1);
 	}
 	//读取数据
 	private class readThread extends Thread {
