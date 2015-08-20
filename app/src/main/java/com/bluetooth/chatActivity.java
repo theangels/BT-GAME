@@ -82,7 +82,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 					//delay(140);
 					//Toast.makeText(mContext, "发送！", Toast.LENGTH_SHORT).show();
 					//System.out.printf("%s\n", send[i]);
-					if (t < 16) {
+					if (t < 4) {
 						is[i]=false;
 						t++;
 					}
@@ -110,7 +110,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				handler.sendMessage(message);
 			}
 		};
-		timer.schedule(task, 1000, 40);//推迟发送 发送间断
+		timer.schedule(task, 1000, 20);//推迟发送 发送间断
 		send = new String[32+5];
 		is = new boolean[32+5];
 		msgInit();
@@ -140,6 +140,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 			public boolean onTouch(View v, MotionEvent event) {
 				int h = get_h(event.getY()) + 1;
 				int l = get_l(event.getX()) + 1;
+				if(h<1||h>16||l<1||l>16) return false;
 				switch (event.getAction()) {
 					//清除
 					case MotionEvent.ACTION_UP:
@@ -147,7 +148,8 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 						if (count == 1) {
 							firClick = System.currentTimeMillis();
 
-						} else if (count == 2) {
+						}
+						else if (count == 2) {
 							secClick = System.currentTimeMillis();
 							if (secClick - firClick < 1000) {
 								if(l>=1&&l<=8){
