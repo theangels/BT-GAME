@@ -138,7 +138,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 						}
 						else if (count == 2) {
 							secClick = System.currentTimeMillis();
-							if (secClick - firClick < 1000) {
+							if (secClick - firClick < 2000) {
 								if(l>=1&&l<=8){
 									char tmp[]=send[h-1].toCharArray();
 									tmp[3+l]='1';
