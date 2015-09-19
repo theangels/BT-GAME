@@ -97,7 +97,7 @@ public class chatActivity extends Activity implements OnItemClickListener ,OnCli
 				handler.sendMessage(message);
 			}
 		};
-		timer.schedule(task, 1000, 20);//推迟发送 发送间断
+		timer.schedule(task, 1000, 30);//推迟发送 发送间断
 		send = new String[32+5];
 		is = new boolean[32+5];
 		msgInit();
